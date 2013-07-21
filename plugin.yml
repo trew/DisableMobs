@@ -1,0 +1,15 @@
+name: DisableMobs
+main: se.samuelandersson.disablemobs.DisableMobs
+version: 1.0
+
+commands:
+  killmob:
+    description: This will kill all mobs of a specific type.
+    usage: "Usage: /killmob <mobname> [worlds ...]"
+    permission: disablemobs.killmob
+    permission-message: You are not authorized to use this command.
+    
+permissions:
+  disablemobs.killmob:
+    description: Gives access to the killmob command
+    default: op
