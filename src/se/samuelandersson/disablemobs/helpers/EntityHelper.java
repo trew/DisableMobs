@@ -40,13 +40,11 @@ import org.bukkit.entity.EntityType;
  */
 public class EntityHelper {
 
-	private static final EntityHelper instance = new EntityHelper();
+	private static final List<EntityType> mobs;
+	private static final List<EntityType> hostile;
+	private static final List<EntityType> neutral;
 
-	private final List<EntityType> mobs;
-	private final List<EntityType> hostile;
-	private final List<EntityType> neutral;
-
-	private EntityHelper() {
+	static {
 		hostile = new ArrayList<EntityType>();
 		hostile.add(EntityType.BLAZE);
 		hostile.add(EntityType.CAVE_SPIDER);
@@ -83,7 +81,6 @@ public class EntityHelper {
 		mobs.addAll(hostile);
 		mobs.addAll(neutral);
 	}
-
 	/**
 	 * Tries to retrieve the name from the mob using two methods. The first one
 	 * uses <code>EntityType.name()</code> , the other one matches against
@@ -97,10 +94,10 @@ public class EntityHelper {
 	 */
 	public static EntityType getTypeFromName(String name) {
 		name = name.toLowerCase();
-		for (EntityType t : instance.mobs) {
+		for (EntityType t : mobs) {
 			if (t.name().toLowerCase().equals(name)) return t;
 		}
-		for (EntityType t : instance.mobs) {
+		for (EntityType t : mobs) {
 			if (t.getName().toLowerCase().equals(name)) return t;
 		}
 		return EntityType.UNKNOWN;
@@ -128,8 +125,8 @@ public class EntityHelper {
 	 * @return a list of mobs that starts with the provided message
 	 */
 	public static List<String> getMobsStartingWith(String msg) {
-		ArrayList<String> l = new ArrayList<String>(instance.mobs.size());
-		for (EntityType e : instance.mobs) {
+		ArrayList<String> l = new ArrayList<String>(mobs.size());
+		for (EntityType e : mobs) {
 			String entityName = getEntityName(e);
 			if (entityName.startsWith(msg)) {
 				l.add(entityName);
@@ -145,7 +142,7 @@ public class EntityHelper {
 	 * @return true if the entity type is a mob
 	 */
 	public static boolean isMob(EntityType type) {
-		return instance.mobs.contains(type);
+		return mobs.contains(type);
 	}
 
 	/**
@@ -155,7 +152,7 @@ public class EntityHelper {
 	 * @return true if the entity type is a hostile mob
 	 */
 	public static boolean isHostileMob(EntityType type) {
-		return instance.hostile.contains(type);
+		return hostile.contains(type);
 	}
 
 	/**
@@ -165,7 +162,10 @@ public class EntityHelper {
 	 * @return true if the entity type is a neutral mob
 	 */
 	public static boolean isNeutralMob(EntityType type) {
-		return instance.neutral.contains(type);
+		return neutral.contains(type);
 	}
 
+	/** Hidden constructor */
+	private EntityHelper() {
+	}
 }
