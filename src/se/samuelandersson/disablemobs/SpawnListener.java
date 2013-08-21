@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.SpawnEgg;
 
 import se.samuelandersson.disablemobs.helpers.EntityHelper;
@@ -43,7 +44,8 @@ public class SpawnListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (event.getItem().getData() instanceof SpawnEgg) {
+		ItemStack itemStack = event.getItem();
+		if (itemStack != null && itemStack.getData() instanceof SpawnEgg) {
 			SpawnEgg data = (SpawnEgg) event.getItem().getData();
 			EntityType type = data.getSpawnedType();
 			MobPermission permission = plugin.getMobPermission(type);
