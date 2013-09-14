@@ -1,6 +1,6 @@
 name: DisableMobs
 main: se.samuelandersson.disablemobs.DisableMobs
-version: 1.0
+version: 1.1
 
 commands:
   killmob:
@@ -8,8 +8,16 @@ commands:
     usage: "Usage: /killmob <mobname> [worlds ...]"
     permission: disablemobs.killmob
     permission-message: You are not authorized to use this command.
+  disablemob:
+    description: This will disable spawning the mob of a specific type.
+    usage: "Usage: /disablemob <mobname> [worlds ...]"
+    permission: disablemobs.disablemob
+    permission-message: You are not authorized to use this command.
     
 permissions:
   disablemobs.killmob:
     description: Gives access to the killmob command
+    default: op
+  disablemobs.disablemob:
+    description: Gives access to the disablemob command
     default: op

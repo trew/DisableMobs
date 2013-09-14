@@ -24,6 +24,7 @@ package se.samuelandersson.disablemobs;
 
 import java.util.logging.Logger;
 
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,17 +58,30 @@ public class DisableMobs extends JavaPlugin {
 		if (setting.equalsIgnoreCase("egg")) return MobPermission.ALLOWED_WITH_EGG;
 		return MobPermission.ENABLED;
 	}
+	
+	public void setMobPermission(EntityType type, MobPermission permission) {
+		if (type == EntityType.UNKNOWN) return;
+		
+		MobPermission oldPermission = getMobPermission(type);
+		getConfig().set("mobs." + EntityHelper.getEntityName(type), oldPermission.getValue());
+		saveConfig();
+	}
 
+	private void setCommandExecutor(String commandName, CommandExecutor executor) {
+		PluginCommand command = getCommand(commandName);
+		if (command != null)
+			command.setExecutor(executor);
+		else
+			log.severe("Couldn't retrieve plugin command \"" + commandName + "\". Command is not available.");
+	}
+	
 	@Override
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-		PluginCommand command = getCommand("killmob");
-		if (command != null)
-			command.setExecutor(new KillMobCommandExecutor(this));
-		else
-			log.severe("Couldn't retrieve plugin command \"killmob\". Command is not available.");
+		setCommandExecutor("killmob", new KillMobCommandExecutor(this));
+		setCommandExecutor("disablemob", new DisableMobCommandExecutor(this));
 		new SpawnListener(this);
 
 		log.info("[" + getDescription().getName() + "] is now enabled.");

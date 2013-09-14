@@ -23,7 +23,23 @@
 package se.samuelandersson.disablemobs;
 
 public enum MobPermission {
-	ENABLED,
-	DISABLED,
-	ALLOWED_WITH_EGG;
+	ENABLED("true"),
+	DISABLED("false"),
+	ALLOWED_WITH_EGG("egg");
+	
+	String value;
+	private MobPermission(String value) {
+		this.value = value;
+	}
+	
+	public String getValue() {
+		return value;
+	}
+	
+	public static MobPermission fromString(String name) {
+		if (name.equals(ENABLED.value)) return ENABLED;
+		if (name.equals(DISABLED.value)) return DISABLED;
+		if (name.equals(ALLOWED_WITH_EGG.value)) return ALLOWED_WITH_EGG;
+		return ENABLED;
+	}
 }
